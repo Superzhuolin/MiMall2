@@ -1,71 +1,6 @@
 // 订单
 <template>
-  <div class="product">
-    <!-- 引入产品参数组件 -->
-    <product-param :title="product.name">
-      <!-- v-slot:xxx（可简写为#xxx） -->
-      <template v-slot:buy>
-        <button class="btn" @click="buy">立即购买</button>
-      </template>
-    </product-param>
-    <div class="content">
-      <div class="item-bg">
-        <h2>{{ product.name }}</h2>
-        <h3>{{ product.subtitle }}</h3>
-        <p>
-          <a href="" id="">全球首款双频 GP</a>
-          <span>|</span>
-          <a href="" id="">骁龙845</a>
-          <span>|</span>
-          <a href="" id="">AI 变焦双摄</a>
-          <span>|</span>
-          <a href="" id="">红外人脸识别</a>
-        </p>
-        <div class="price">
-          <span
-            >￥<em>{{ product.price }}</em></span
-          >
-        </div>
-      </div>
-      <div class="item-bg-2"></div>
-      <div class="item-bg-3"></div>
-      <div class="item-swiper">
-        <swiper :options="swiperOption">
-          <swiper-slide><img src="/imgs/product/gallery-2.png" /></swiper-slide>
-          <swiper-slide><img src="/imgs/product/gallery-3.png" /></swiper-slide>
-          <swiper-slide><img src="/imgs/product/gallery-4.png" /></swiper-slide>
-          <swiper-slide><img src="/imgs/product/gallery-5.jpg" /></swiper-slide>
-          <swiper-slide><img src="/imgs/product/gallery-6.jpg" /></swiper-slide>
-          <!-- Optional controls -->
-          <div class="swiper-pagination" slot="pagination"></div>
-        </swiper>
-        <p class="desc">小米8 AI变焦双摄拍摄</p>
-      </div>
-      <div class="item-video">
-        <h2>60帧超慢动作摄影<br />慢慢回味每一瞬间的精彩</h2>
-        <p>
-          后置960帧电影般超慢动作视频，将眨眼间的美妙展现得淋漓尽致！<br/>
-          更能AI 精准分析视频内容，15个场景智能匹配背景音效。
-        </p>
-        <!-- 实现点击背景图片播放视频功能 -->
-        <div class="video-bg" @click="showSlide = 'slideDown'"></div>
-        <div class="video-box" v-show="showSlide">
-          <!-- 播放视频时:阴影效果 -->
-          <div class="overlay"></div>
-          <!-- 视频组件 -->
-          <div class="video" :class="showSlide">
-            <span class="icon-close" @click="closeVideo"></span>
-            <video
-              src="/imgs/product/video.mp4"
-              muted
-              autoplay
-              controls
-            ></video>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="product">product</div>
 </template>
 <script>
 import { swiper, swiperSlide } from "vue-awesome-swiper";
@@ -100,20 +35,20 @@ export default {
     getProductInfo() {
       let id = this.$route.params.id; //获取是商品id
       this.axios.get(`/products/${id}`).then((res) => {
-        this.product = res;  //获取商品详情
+        this.product = res; //获取商品详情
       });
     },
     buy() {
       let id = this.$route.params.id;
       this.$router.push(`/detail/${id}`); //跳转到商品详情页面
     },
-    closeVideo(){
+    closeVideo() {
       //.6s后变量置为空,video-box就会隐藏掉了
-      this.showSlide="slideUp";
+      this.showSlide = "slideUp";
       setTimeout(() => {
-      this.showSlide="";
-      }, (600));
-    }
+        this.showSlide = "";
+      }, 600);
+    },
   },
 };
 </script>
