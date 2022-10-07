@@ -29,64 +29,6 @@ export default{
 
     }
   },
-  mounted(){
-    this.getOrderDetail();
-  },
-  methods:{
-    getOrderDetail(){
-      //调用接口
-      this.axios.get(`/orders/${this.orderId}`).then((res)=>{
-        let item = res.shippingVo;//购物车地址实体
-        this.addresInfo = `${item.receiverName}     ${item.receiverMobile}
-                           ${item.receiverProvince} ${item.receiverCity} 
-                           ${item.receiverDistrict} ${item.receiverAddress}`
-        this.orderDetail = res.orderItemVoList;
-        this.payment=res.payment;
-      })
-    },
-    paySubmit(payType){
-      if(payType ==1){
-      //打开新的窗口(要拼接id)
-        window.open('/#/order/alipay?orderId='+this.orderId,'_blank');
-      }
-      else{
-          this.axios.post("/pay",{
-            orderId:this.orderId,
-            orderName:"Vue高仿小米商城", //扫码支付时订单名称
-            amount:0.01, //单位元
-            payType:2 //1支付宝，2微信
-          }).then((res)=>{//res就是data
-            QRCode.toDataURL(res.content)  //调用接口拿到服务端返回的字符串
-            .then(url=>{  
-            //通过QRCode二维码插件,讲字符串转化为base64位的图片,并将图片保存后传给子组件渲染
-              this.showPay = true; //支付成功,弹框显示
-              this.payImg = url ; //支付二维码图片=url地址
-              this.loopOrderState();
-            }).catch( ()=>{
-              this.$message.error("微信支付二维码生成失败,请稍后重试");
-            })
-          })
-      }
-    },//关闭微信弹框
-    closePayModal(){
-       this.showPay = false;
-       this.showPayModal=true;//是否完成支付
-       clearInterval(this.T);//关闭定时器
-    },//查询当前订单支付状态
-    loopOrderState(){
-      this.T=setInterval(()=>{
-        this.axios.get(`/orders/${this.orderId}`).then((res)=>{
-          if(res.status == 20){//已付款
-          clearInterval(this.T);//关闭定时器
-          this.goOrderList();//回到订单页面
-          }
-        },1000);
-      })
-    },
-    goOrderList(){//按下查看订单触发该方法
-      this.$router.push("/order/list");//跳转到订单详情页面
-    }
-  }
 }
 </script>
 <style lang="scss">

@@ -1,24 +1,7 @@
 // 购物车头部组件
 <template>
   <div class="order-header">
-    <!-- 设置最大宽度 :防止超出此区域-->
-    <div class="container clearfix" >
-        <!-- logo -->
-        <div class="header-logo">
-          <a href="/#/index"></a>
-        </div>
-        <!-- 标题 -->
-        <div class="title">
-          <h2>{{title}}
-            <slot name="tip"></slot>
-          </h2> 
-        </div>
-        <!-- 用户名称  右浮动 -->
-        <div class="username">
-          <a href="javascript:;">{{username}}</a>
-        </div>
-
-    </div>
+    order-header
   </div>
 </template>
 
