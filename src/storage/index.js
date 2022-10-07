@@ -21,10 +21,10 @@ export default {
             if (val) return val[key];
         }
         return this.getStorage()[key];
-    },
+    },//获取整个数据
     getStorage() {
         return JSON.parse(window.sessionStorage.getItem(STORAGE_KEY) || '{}');
-    },
+    },//清空值
     clear(key, module_name) {
         let val = this.getStorage();
         if (module_name) {
@@ -39,5 +39,6 @@ export default {
         // } else {
         //     delete val[key];
         // }
+        // {"user":{"userName":"jack","age":30,"sex":1}}
     }
 }
