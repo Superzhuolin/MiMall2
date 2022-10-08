@@ -1,6 +1,6 @@
 // 订单
 <template>
-  <div class="product">product</div>
+  <div class="product"> product</div>
 </template>
 <script>
 import { swiper, swiperSlide } from "vue-awesome-swiper";
