@@ -3,7 +3,8 @@
 const { defineConfig } = require('@vue/cli-service')
 // 导入模块
 module.exports = defineConfig({
-  transpileDependencies: true,// 是否将所有文件都编译一遍（通过 babel 编译文件：ES6 + → ES5）
+  // 是否将所有文件都编译一遍（通过 babel 编译文件：ES6 + → ES5）
+  transpileDependencies: true,
   lintOnSave: false,
   devServer: {//devServer是本地开发服务器的配置信息.
     host: "localhost", //指定本地访问主机
