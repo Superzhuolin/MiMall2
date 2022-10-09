@@ -20,7 +20,7 @@ export default {
         autoplay: true,
         slidesPerView: 3,
         spaceBetween: 30,
-        freeMode: true,
+        freeMode: true, 
         pagination: {
           el: ".swiper-pagination",
           clickable: true,
