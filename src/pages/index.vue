@@ -1,7 +1,5 @@
 <template>
-  <div class="index">
-    index
-  </div>
+  <div class="index"></div>
 </template>
 <script>
 import ServiceBar from "./../components/ServiceBar.vue";

@@ -9,19 +9,18 @@ import axios from "axios";
 import jsonp from "jsonp";
 export default {
   name: "App",
-  components: {
-  },
+  components: {},
   data() {
     return {
-      age: 30,
-      data: "",
     };
   },
   mounted() {
-     
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+@import "./assets/scss/reset.scss";
+@import "./assets/scss/config.scss";
+@import "./assets/scss/button.scss";
 </style>

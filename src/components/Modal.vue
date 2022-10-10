@@ -1,49 +1,4 @@
 <template>
-  <transition name="slide">
-    <div class="modal" v-show="showModal">
-      <div class="mask"></div>
-      <!-- 对话框 -->
-      <div class="modal-dialog">
-        <!--标题 -->
-        <div class="modal-header">
-          <span>{{ title }}</span>
-          <a
-            href="javascript:;"
-            class="icon-close"
-            @click="$emit('cancel')"
-          ></a>
-        </div>
-        <div class="modal-body">
-          <slot name="body"></slot>
-        </div>
-        <div class="modal-footer">
-          <!--使用$emit进行子传父 点确定之后调用父组件的submit-->
-          <a
-            href="javascript:;"
-            class="btn"
-            v-if="btnType == 1"
-            @click="$emit('submit')"
-            >{{ sureText }}</a
-          >
-          <a
-            href="javascript:;"
-            class="btn"
-            v-if="btnType == 2"
-            @click="$emit('cancel')"
-            >{{ cancelText }}</a
-          >
-          <div class="btn-group" v-if="btnType == 3">
-            <a href="javascript:;" class="btn" @click="$emit('submit')">
-              {{ sureText }}
-            </a>
-            <a href="javascript:;" class="btn btn-default" @click="$emit('cancel')">
-              {{ cancelText }}
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </transition>
 </template>
 
 <script>
