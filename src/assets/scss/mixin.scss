@@ -13,7 +13,7 @@
     background-size: $size;//等比缩放(会留白边)
 }
 @mixin position($pos:absolute,$top:0,$left:0,$w:100%,$h:100%){
-    position: $pos;
+    position: $pos;  
     top:$top;
     left: $left;
     width: $w;
