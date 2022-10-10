@@ -25,7 +25,38 @@
       </div>
     </div>
     <!-- 导航栏 -->
-    <div class="nav-hearder"></div>
+    <div class="nav-header">
+      <div class="container">
+        <!-- logo -->
+        <div class="header-logo">
+          <a href="/#/index"></a>
+        </div>
+        <div class="header-menu">
+          <!-- 小米手机 -->
+          <div class="item-menu">
+            <span>小米手机</span>
+            <div class="children"></div>
+          </div>
+          <!-- RemMi红米手机 -->
+          <div class="item-menu">
+            <span>RemMi红米手机</span>
+            <div class="children"></div>
+          </div>
+          <!-- 电视 -->
+          <div class="item-menu">
+            <span>电视</span>
+            <div class="children">
+            </div>
+          </div>
+        </div>
+        <div class="header-search">
+          <div class="wrapper">
+            <input type="text" name="keyword" />
+            <a href="javascript:;"></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
