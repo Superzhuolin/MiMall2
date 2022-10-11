@@ -23,10 +23,10 @@ module.exports = defineConfig({
   // publicPath:'/app',  //设置前缀
   // outputDir:'dist',  //改变压缩包的文件名
   // indexPath:'index2.html',  //改变index.html的文件名
-  productionSourceMap: false,//生产环境的source map  设置true后网页不可查看源代码
-  chainWebpack: (config) => {
-    config.plugins.delete('prefetch');
-  }
+  // productionSourceMap: false,//生产环境的source map  设置true后网页不可查看源代码
+  // chainWebpack: (config) => {
+  //   config.plugins.delete('prefetch');
+  // }
 })
 
 /* 
