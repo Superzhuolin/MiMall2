@@ -120,7 +120,9 @@
       sureText="查看购物车"
       btnType="1"
       modalType="middle"
-      :showModal="true"
+      :showModal="showModal"
+      @submit="goToCart"
+      @cancel="showModal=false"
     >
       <template v-slot:body>
         <p>商品添加成功 !</p>
@@ -252,18 +254,15 @@ export default {
         });
     },
     addCart(id) {
-      this.axios
-        .post("/carts", {
-          productId: id,
-          selected: true,
-        })
-        .then((res) => {
-          this.showModal = true;
-          this.$store.dispatch("saveCartCount", res.cartTotalQuantity); //更新购物车总数量
-        })
-        .catch(() => {
-          this.showModal = true;
-        });
+        this.showModal=true; 
+      // this.axios.post("/carts",{
+      //   product:id,
+      //   selected:true,
+      // }).then((res)=>{
+
+      // }).catch((res)=>{
+      //   this.showModal=true;
+      // })
     },
     goToCart() {
       this.$router.push("/cart");
