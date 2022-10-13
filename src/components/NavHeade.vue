@@ -245,7 +245,7 @@ export default {
             box-shadow: 0px 7px 6px 0px rgba(0, 0, 0, 0.11);
             z-index: 10;
             transition: height 0.5s; //控制高度做动画
-            // background-color: #ffffff; //设置背景色为白色,避免被其他颜色覆盖
+            background-color: #ffffff; //设置背景色为白色,避免被其他颜色覆盖
 
             .product {
               position: relative;

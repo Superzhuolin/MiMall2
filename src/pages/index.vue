@@ -12,8 +12,7 @@
               <div class="children">
                 <ul v-for="(item, i) in menuList" :key="i">
                   <li v-for="(sub, j) in item" :key="j">
-                    <a :href="sub ? '/#/product/' + sub.id : ''"
-                    target="_blank">
+                    <a :href="sub ? '/#/product/' + sub.id : ''" target="_blank">
                       <!-- :href="sub ? `/#/product/${sub.id} `: ''" -->              
                       <img :src="sub ? sub.img : '/imgs/item-box-1.png'" />
                       {{ sub ? sub.name : "小米9" }}
@@ -69,15 +68,12 @@
       </div>
       <!-- 广告界面 -->
       <div class="abs-box">
-        <a
-          :href="'/#/product/' + item.id"
-          v-for="(item, index) in adsList"
-          :key="index"
-        >
           <!-- 图片懒加载减轻前端服务器带宽压力,动态加载图片,图片未处理有默认替换图片
           通过鼠标滚动慢慢再加载出来 -->
-          <img :src="item.img" alt="" />
-        </a>
+          <a :href="'/#/product/'+item.id"
+              v-for="item in adsList" :key="item.id">
+              <img :src="item.img" alt="">
+          </a>
       </div>
       <!-- 横幅界面 -->
       <div class="banner">
@@ -88,6 +84,35 @@
     </div>
     <!-- 产品界面 -->
     <div class="product-box">
+      <div class="container">
+        <h2>手机</h2>
+        <div class="wrapper">
+          <!-- 左边产品 -->
+          <div class="banner-left">
+            <a href="/#/product/35">
+              <img :src="'/imgs/mix-alpha.jpg'" alt=""/>
+            </a>
+          </div>
+          <!-- 右边明细 -->
+          <div class="list-box">
+            <div class="list" v-for="(arr, i) in phoneList" :key="i">
+              <div class="item" v-for="(item, j) in arr" :key="j">
+                <span :class="{ 'new-pro': j % 2 == 0 }">新品</span>
+                <div class="item-img">
+                  <img :src="item.mainImage" /> 
+                </div>
+                <div class="item-info">
+                  <h3>{{ item.name }}</h3>
+                  <p>{{ item.subtitle }}</p>
+                  <p class="price" @click="addCart(item.id)">
+                    {{ item.price }}元
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <service-bar></service-bar>
     <modal
@@ -95,9 +120,7 @@
       sureText="查看购物车"
       btnType="1"
       modalType="middle"
-      :showModal="showModal"
-      @submit="goToCart"
-      @cancel="showModal = false"
+      :showModal="true"
     >
       <template v-slot:body>
         <p>商品添加成功 !</p>
@@ -219,12 +242,8 @@ export default {
   },
   methods: {
     init() {
-      this.axios
-        .get("/products", {
-          params: {
-            categoryId: 100012,
-            pageSize: 14,
-          },
+      this.axios.get("/products", {
+          params: {categoryId: 100012,pageSize: 14,},
         })
         .then((res) => {
           res.list = res.list.slice(6, 14);
@@ -268,7 +287,7 @@ export default {
       background-color: #55585a7a;
       box-sizing: border-box; //定义盒子模型(保持尺寸)
       .menu-wrap {
-        .menu-item {
+        .menu-item {  
           height: 50px;
           line-height: 50px; //设置行高
           a {
@@ -388,7 +407,8 @@ export default {
               font-size: 14px;
               line-height: 24px; //字体居中
               color: $colorG;
-              background-color: #7ecf68; //后面要删掉
+              margin-top: 10px;
+              // background-color: #7ecf68; //后面要删掉
               &.new-pro {
                 background-color: #7ecf68;
               }
@@ -421,11 +441,7 @@ export default {
                 cursor: pointer;
                 &:after {
                   content: " ";
-                  @include bgImg(
-                    22px,
-                    22px,
-                    "/public/imgs/icon-cart-hover.png"
-                  );
+                  @include bgImg(22px,22px,"/public/imgs/icon-cart-hover.png");
                   margin-left: 5px;
                   vertical-align: middle; //图片文字居中
                 }
