@@ -48,13 +48,14 @@
           更能AI 精准分析视频内容，15个场景智能匹配背景音效。
         </p>
         <!-- 实现点击背景图片播放视频功能 -->
-        <div class="video-bg" @click="showSlide = 'slideDown'"></div>
-        <div class="video-box" v-show="showSlide">
+        <!-- <div class="video-bg" @click="showSlide = 'slideDown'"></div> -->
+        <div class="video-bg" @click="showSlide = true"></div>
+        <div class="video-box" >
           <!-- 播放视频时:阴影效果 -->
-          <div class="overlay"></div>
+          <div class="overlay" v-if="showSlide"></div>
           <!-- 视频组件 -->
-          <div class="video" :class="showSlide">
-            <span class="icon-close" @click="closeVideo"></span>
+          <div class="video" :class="{'slide':showSlide}">
+            <span class="icon-close" @click="showSlide = false"></span>
             <video
               src="/imgs/product/video.mp4"
               muted
@@ -79,7 +80,7 @@ export default {
   },
   data() {
     return {
-      showSlide: "", //控制动画效果
+      showSlide: false, //控制动画效果
       product: {}, //商品信息
       swiperOption: {
         autoplay: true,
@@ -215,7 +216,7 @@ export default {
         //     opacity: 1;
         //   }
         // }
-        // @keyframes slideUp {
+        // @keyframes slideUp { 
         //   from {
         //     top: 50%;
         //     opacity: 1;
@@ -225,37 +226,32 @@ export default {
         //     opacity: 0;
         //   }
         // }
-        .video {
-          position: fixed; //网页定位视频窗口
-          top: -50%; //起初看不见,后逐渐可见
+        .video{
+          position: fixed;
+          top: -50%;
           left: 50%;
-          transform: translate(-50%, -50%); //延X轴和延Y轴均移动50%
+          transform: translate(-50%,-50%);
           z-index: 10;
-          width: 1000px; //视频组件宽高
+          width: 1000px;
           height: 536px;
-          opacity: 1; //起初透明,后逐渐可见
-          //当他有slideDown属性时
-          &.slideDown {
-            animation: slideDown 0.6s linear;
+          opacity: 0;
+          transition: all 2.6s;
+          &.slide{
             top: 50%;
+            opacity: 1;
           }
-          &.slideUp {
-            animation: slideUp 1s linear;
-          }
-          // 关闭图标
-          .icon-close {
+          .icon-close{
             position: absolute;
             top: 20px;
             right: 20px;
-            @include bgImg(20px, 20px, "/public/imgs/icon-close.png");
             cursor: pointer;
-            z-index: 11;
+            @include bgImg(20px,20px,"/public/imgs/icon-close.png");
+             z-index: 11;
           }
-          // 视频展示
-          video {
-            width: 100%; //让video视频宽高撑满整个父容器
+          video{
+            width: 100%;
             height: 100%;
-            object-fit: cover; //覆盖视频原生组件的阴影(视频内容覆盖整个窗口)
+            object-fit: cover;
             outline: none;
           }
         }
