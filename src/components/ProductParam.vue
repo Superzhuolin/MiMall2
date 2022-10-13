@@ -11,7 +11,7 @@
         <a href="javasrcipt:;">参数</a><span>|</span>
         <a href="javasrcipt:;">用户评价</a>
         <!-- 插槽(button) -->
-        <slot name="buy"></slot>
+        <slot name="buy"></slot> 
       </div>
     </div>
   </div>
@@ -29,9 +29,20 @@ export default {
     title:String
   },
   mounted() {
+    window.addEventListener("scroll",this.initHeight);
   },
   methods: {
+    initHeight(){
+       let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      this.isFixed = scrollTop > 152 ? true : false;
+    }
   },
+  destroyed(){
+    window.removeEventListener("scroll",this.initHeight,false);
+  }
 };
 </script>
 <style lang="scss">
@@ -40,8 +51,15 @@ export default {
 .nav-bar{
   height: 70px;
   line-height: 70px;
-  border: 1px solid $colorH;
-  .container{
+  border-top: 1px solid $colorH;
+  background: $colorG;
+  &.is_fixed{
+    box-shadow: 0 5px 5px $colorE;
+    position: fixed;
+    top:0;
+    width: 100%
+  }
+  .container{ 
     @include flex();
     .pro-title{
       color: $colorB;
