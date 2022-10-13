@@ -1,6 +1,12 @@
 // 订单
 <template>
-  <div class="product"> product</div>
+  <div class="product"> 
+    <product-param>
+      <template v-slot:buy>
+        <button class="btn">立即购买</button>
+      </template>
+    </product-param>
+  </div>
 </template>
 <script>
 import { swiper, swiperSlide } from "vue-awesome-swiper";

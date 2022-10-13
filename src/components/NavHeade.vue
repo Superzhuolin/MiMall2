@@ -18,7 +18,7 @@
           <a href="javascript:;" class="my-cart" @click="goToCart" >
             <!-- 购物车图标 -->
             <span class="icon-cart"></span>
-            购物车
+            购物车({{cartCount}})
           </a>
         </div>
       </div>
@@ -140,9 +140,17 @@ export default {
   name: "nav-header",
   data() {
     return {
-      username: "Jack",
       phoneList: [],
     };
+  },
+  computed:{
+    // username(){
+    //   return this.$store.state.username;
+    // },
+    // cartCount(){
+    //   return this.$store.state.cartCount;
+    // },
+    ...mapState(["username","cartCount"])
   },
   filters: {
     currency(val) {
@@ -198,6 +206,7 @@ export default {
         background-color: #ff6600;
         text-align: center;
         color: #ffffff;
+        margin-right: 0;
         .icon-cart {
           @include bgImg(16px, 12px, "/public/imgs/icon-cart-checked.png");
           margin-right: 4px;
