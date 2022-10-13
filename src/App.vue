@@ -21,7 +21,7 @@ export default {
   methods: {
     //页面刷新后通过mounted(钩子)再次读取用户名
     getUser() {
-      this.axios.get("/user").then((res) => {
+      this.axios.get("/user").then((res={}) => {
         this.$store.dispatch("saveUserName", res.username);
       });
     },

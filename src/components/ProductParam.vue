@@ -4,7 +4,7 @@
   <div class="nav-bar" :class="{ is_fixed: isFixed }">
     <div class="container">
       <!-- 标题栏 -->
-      <div class="pro-title">小米8</div>
+      <div class="pro-title">{{title}}</div>
       <!-- 参数栏 -->
       <div class="pro-param">
         <a href="javasrcipt:;">概述</a><span>|</span>

@@ -6,15 +6,14 @@
       <!-- v-slot:xxx（可简写为#xxx） -->
       <template v-slot:buy>
         <button class="btn" @click="buy">立即购买</button>
-      </template>
+      </template> 
     </product-param>
     <div class="content">
       <div class="item-bg">
-        <h2>{{ product.name }}</h2>
-        <h3>{{ product.subtitle }}</h3>
+        <h2>{{product.name}} </h2>
+        <h3>{{product.subtitle}}</h3>
         <p>
-          <a href="" id="">全球首款双频 GP</a>
-          <span>|</span>
+          <a href="" id="">全球首款双频 GP</a><span>|</span>
           <a href="" id="">骁龙845</a>
           <span>|</span>
           <a href="" id="">AI 变焦双摄</a>
@@ -22,9 +21,7 @@
           <a href="" id="">红外人脸识别</a>
         </p>
         <div class="price">
-          <span
-            >￥<em>{{ product.price }}</em></span
-          >
+          <span>￥<em>{{product.price }}</em></span>
         </div>
       </div>
       <div class="item-bg-2"></div>
@@ -49,19 +46,14 @@
         </p>
         <!-- 实现点击背景图片播放视频功能 -->
         <!-- <div class="video-bg" @click="showSlide = 'slideDown'"></div> -->
-        <div class="video-bg" @click="showSlide = true"></div>
-        <div class="video-box" >
+        <div class="video-bg" @click="showSlide = 'slideDown'"></div>
+        <div class="video-box" v-show="showSlide">
           <!-- 播放视频时:阴影效果 -->
-          <div class="overlay" v-if="showSlide"></div>
+          <div class="overlay" ></div>
           <!-- 视频组件 -->
-          <div class="video" :class="{'slide':showSlide}">
-            <span class="icon-close" @click="showSlide = false"></span>
-            <video
-              src="/imgs/product/video.mp4"
-              muted
-              autoplay
-              controls
-            ></video>
+          <div class="video" :class="showSlide">
+            <span class="icon-close" @click="closeVideo"></span>
+            <video src="/imgs/product/video.mp4" muted autoplay controls></video>
           </div>
         </div>
       </div>
@@ -80,7 +72,7 @@ export default {
   },
   data() {
     return {
-      showSlide: false, //控制动画效果
+      showSlide: '', //控制动画效果
       product: {}, //商品信息
       swiperOption: {
         autoplay: true,
@@ -100,20 +92,19 @@ export default {
   methods: {
     getProductInfo() {
       let id = this.$route.params.id; //获取是商品id
-      this.axios.get(`/products/${id}`).then((res) => {
-        this.product = res;  //获取商品详情
-      });
+      this.axios.get(`/products/${id}`).then((res)=>{
+         this.product=res;
+      })
     },
-    buy() {
-      let id = this.$route.params.id;
-      this.$router.push(`/detail/${id}`); //跳转到商品详情页面
+    buy(){
+      let id = this.$route.params.id; //获取是商品id
+      this.$router.push(`/detail/${id}`);
     },
     closeVideo(){
-      //.6s后变量置为空,video-box就会隐藏掉了
-      this.showSlide="slideUp";
-      setTimeout(() => {
-      this.showSlide="";
-      }, (600));
+      this.showSlide ="slideUp";
+      setTimeout(()=>{
+         this.showSlide="";
+      },600)
     }
   },
 };
@@ -206,27 +197,27 @@ export default {
           opacity: 0.4;
           z-index: 10;
         }
-        // @keyframes slideDown {
-        //   from {
-        //     top: -50%;
-        //     opacity: 0;
-        //   }
-        //   to {
-        //     top: 50%;
-        //     opacity: 1;
-        //   }
-        // }
-        // @keyframes slideUp { 
-        //   from {
-        //     top: 50%;
-        //     opacity: 1;
-        //   }
-        //   to {
-        //     top: -50%;
-        //     opacity: 0;
-        //   }
-        // }
-        .video{
+        @keyframes slideDown {
+          from{
+            top:-50%;
+            opacity: 0;
+          }
+          to{
+            top:50%;
+            opacity: 1;
+          }
+        }
+        @keyframes slideUp {
+          from{
+            top:50%;
+            opacity: 1;
+          }
+          to{
+            top:-50%;
+            opacity: 0;
+          }
+        }
+         .video{
           position: fixed;
           top: -50%;
           left: 50%;
@@ -234,11 +225,13 @@ export default {
           z-index: 10;
           width: 1000px;
           height: 536px;
-          opacity: 0;
-          transition: all 2.6s;
-          &.slide{
-            top: 50%;
-            opacity: 1;
+          opacity: 1;
+          &.slideDown{
+            animation: slideDown .6s linear;
+            top:50%;
+          }
+          &.slideUp{
+            animation: slideUp .6s linear;
           }
           .icon-close{
             position: absolute;
