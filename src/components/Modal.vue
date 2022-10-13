@@ -4,18 +4,18 @@
       <div class="mask"></div>
       <div class="modal-dialog">
         <div class="modal-header">
-          <span>标题</span>
+          <span>{{title}}</span>
           <a href="javasrcipt:;" class="icon-close" @click='$emit("cancel")'></a>
         </div>
         <div class="modal-body">
             <slot name="body"></slot>
         </div>
         <div class="modal-footer">
-            <a href="javasrcipt:;" class="btn" v-if="btnType==1" @click='$emit("submit")'>确定</a>
-            <a href="javasrcipt:;" class="btn" v-if="btnType==2" @click='$emit("cancel")'>取消</a>
+            <a href="javasrcipt:;" class="btn" v-if="btnType==1" @click='$emit("submit")'>{{sureText}}</a>
+            <a href="javasrcipt:;" class="btn" v-if="btnType==2" @click='$emit("cancel")'>{{cancelText}}</a>
           <div class="btn-group" v-if="btnType==3">
-            <a href="javasrcipt:;" class="btn" @click='$emit("submit")'>确定</a>
-            <a href="javasrcipt:;" class="btn" @click='$emit("cancel")'>取消</a>
+            <a href="javasrcipt:;" class="btn" @click='$emit("submit")'>{{sureText}}</a>
+            <a href="javasrcipt:;" class="btn" @click='$emit("cancel")'>{{cancelText}}</a>
           </div>
         </div>
       </div>

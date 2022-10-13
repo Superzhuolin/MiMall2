@@ -72,13 +72,13 @@
           通过鼠标滚动慢慢再加载出来 -->
           <a :href="'/#/product/'+item.id"
               v-for="item in adsList" :key="item.id">
-              <img :src="item.img" alt="">
+              <img v-lazy="item.img" alt="">
           </a>
       </div>
       <!-- 横幅界面 -->
       <div class="banner">
         <a href="/#/product/30">
-          <img src="/imgs/banner-1.png" alt="" />
+          <img v-lazy="'/imgs/banner-1.png'" alt="" />
         </a>
       </div>
     </div>
@@ -90,7 +90,7 @@
           <!-- 左边产品 -->
           <div class="banner-left">
             <a href="/#/product/35">
-              <img :src="'/imgs/mix-alpha.jpg'" alt=""/>
+              <img v-lazy="'/imgs/mix-alpha.jpg'" alt=""/>
             </a>
           </div>
           <!-- 右边明细 -->
@@ -99,7 +99,7 @@
               <div class="item" v-for="(item, j) in arr" :key="j">
                 <span :class="{ 'new-pro': j % 2 == 0 }">新品</span>
                 <div class="item-img">
-                  <img :src="item.mainImage" /> 
+                  <img v-lazy="item.mainImage" /> 
                 </div>
                 <div class="item-info">
                   <h3>{{ item.name }}</h3>
@@ -115,6 +115,7 @@
       </div>
     </div>
     <service-bar></service-bar>
+    <!-- modal弹窗组件 -->
     <modal
       title="提示"
       sureText="查看购物车"
