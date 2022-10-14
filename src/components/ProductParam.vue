@@ -53,6 +53,7 @@ export default {
   line-height: 70px;
   border-top: 1px solid $colorH;
   background: $colorG;
+  z-index: 10;
   &.is_fixed{
     box-shadow: 0 5px 5px $colorE;
     position: fixed;

@@ -255,15 +255,15 @@ export default {
         });
     },
     addCart(id) {
+      this.axios.post("/carts",{
+        productId:id,
+        selected:true,
+      }).then((res)=>{
+        this.$store.dispatch("saveCartCount", res.cartTotalQuantity); 
         this.showModal=true; 
-      // this.axios.post("/carts",{
-      //   product:id,
-      //   selected:true,
-      // }).then((res)=>{
-
-      // }).catch((res)=>{
-      //   this.showModal=true;
-      // })
+      }).catch((res)=>{
+        this.showModal=true;
+      })
     },
     goToCart() {
       this.$router.push("/cart");
