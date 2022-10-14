@@ -1,5 +1,73 @@
 <template>
-<div class="cart">cart</div>
+  <div class="cart">
+    <order-header title="购物车">
+      <template v-slot:tip>
+        <span>温习提示:产品是否购买成功,以最终下单为准,请尽快结算</span>
+      </template>
+    </order-header>
+    <div class="wrapper">
+      <div class="container">
+        <div class="cart-box">
+          <ul class="cart-item-head">
+            <li class="col-1">
+              <span class="checkbox" :class="{ checked: allChecked }"  >
+              </span>全选
+            </li>
+            <li class="col-3">商品名称</li>
+            <li class="col-1">单价</li>
+            <li class="col-2">数量</li>
+            <li class="col-1">小计</li>
+            <li class="col-1">操作</li>
+          </ul>
+
+          <ul class="cart-item-list">
+            <li class="cart-item" v-for="(item, index) in list" :key="index">
+              <div class="item-check">
+                <!-- 单选框 -->
+                <span
+                  class="checkbox"
+                  :class="{ checked: item.productSelected }"
+                  @click="updataCart(item)"
+                ></span>
+              </div>
+              <div class="item-name">
+                <img v-lazy="item.productMainImage" alt="" />
+                <span>{{ item.productName + "," + item.productSubtitle }}</span>
+              </div>
+              <div class="item-price">{{ item.productPrice }}</div>
+              <div class="item-num">
+                <div class="num-box">
+                  <a href="javascript:;" @click="updataCart(item,'-')">-</a>
+                  <!-- 添加商品数量 -->
+                  <span>{{ item.quantity }}</span>
+                  <a href="javascript:;" @click="updataCart(item,'+')">+</a>
+                </div>
+              </div>
+              <!-- 小计:单件商品中价格 -->
+              <div class="item-total">{{ item.productTotalPrice }}</div>
+              <!-- 删除按钮 -->
+              <div class="item-del"></div>
+            </li>
+          </ul>
+        </div>
+        <div class="order-wrap clearfix">
+          <div class="cart-tip fl">
+            <a href="/#/index">继续购物</a>
+            共<span>{{ list.length }}</span
+            >件商品，已选择<span>{{ checkedNum }}</span
+            >件
+          </div>
+          <div class="total fr">
+            合计：<span>{{ cartTotalPrice }}</span>元
+            <!-- 跳转到订单确定页面 -->
+            <a href="javascript:;" class="btn">去结算</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <service-bar></service-bar>
+    <nav-footer></nav-footer>
+  </div>
 </template>
 <script>
 import OrderHeader from "./../components/OrderHeader.vue";
@@ -24,68 +92,17 @@ export default {
   mounted() {
     this.getCartList();
   },
-  methods: {
-    // 获取购物车列表
-    getCartList() {
-      this.axios.get("/carts").then((res) => {
-        this.renderData(res);
-      });
-    },//更新购物车数量和单选状态
-    updataCart(item,type){
-      let quantity = item.quantity,
-          selected = item.productSelected;
-      if(type == '-'){
-          if(quantity <=1){
-            // Message.warning("商品至少为一件");
-            this.$message.warning("商品至少为一件");
-            return;
-          }
-          --quantity;
-      }else if(type == "+"){ 
-         if(quantity >=item.productStock){
-            // Message.warning("商品购买数量不能超过库存数量");
-            this.$message.warning("商品购买数量不能超过库存数量");
-            return;
-          }
-          ++quantity;
-      }else{
-        selected= !item.productSelected;// 单选
-      }//更新商品信息
-      this.axios.put(`/carts/${item.productId}`,{quantity,selected}).then((res)=>{
-        this.renderData(res);
+  methods:{
+    getCartList(){
+      this.axios.get("/carts").then((res)=>{
+        this.list = res.cartProductVoList || []; 
+        this.allChecked = res.selectedAll;
+        this.cartTotalPrice = res.cartTotalPrice;
+        this.checkedNum = this.list.filter(item=>item.productSeleted).length;
+
       })
-    },//删除功能
-    delProduct(item){
-      this.axios.delete(`/carts/${item.productId}`).then((res)=>{
-        // Message.success("删除成功");
-        this.$message.success("删除成功");//全局插件用法
-        this.renderData(res);
-      })
-    },
-    //控制全选功能
-    toggleAll() { 
-      let url = this.allChecked ? "/carts/unSelectAll" : "/carts/selectAll";
-      this.axios.put(url).then((res) => {
-        this.renderData(res);
-      });
-    },
-    // 公共赋值
-    renderData(res) {
-      this.list = res.cartProductVoList || [];
-      this.allChecked = res.selectedAll;
-      this.cartTotalPrice = res.cartTotalPrice;
-      this.checkedNum = this.list.filter((item) => item.productSelected).length;// 过滤商品
-    },
-    // 购物车下单
-    order(){
-      let isCheck = this.list.every(item=>!item.productSelected);// 购物车是否全选
-      if(isCheck){
-        Message.warning("请选择一件商品");
-      }else{
-        this.$router.push("/order/confirm");//跳转到订单确定页面 
-      }
     }
-  },
+  }
 };
 </script>
 <style lang="scss">
