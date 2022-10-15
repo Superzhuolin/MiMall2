@@ -15,7 +15,7 @@
         </div>
         <!-- 用户名称  右浮动 -->
         <div class="username">
-          <a href="javascript:;">{{username}}</a>
+          <a href="javascript:;">{{username}}1</a>
         </div>
     </div>
   </div>
