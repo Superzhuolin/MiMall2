@@ -1,7 +1,6 @@
 // 购物车头部组件
 <template>
   <div class="order-header">
-     <div class="order-header">
     <!-- 设置最大宽度 :防止超出此区域-->
     <div class="container clearfix" >
         <!-- logo -->
@@ -19,7 +18,6 @@
           <a href="javascript:;">{{username}}</a>
         </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -41,7 +39,7 @@ export default {
 <style  lang="scss">
 .order-header{
   padding: 30px 0;
-  // border-bottom: 2px solid #ff6600;
+  border-bottom: 2px solid #ff6600;
   .title,.username{
     display: inline-block;
     height: 55px;
@@ -49,18 +47,19 @@ export default {
   }
   .header-logo{
     float: left;
-    
   }
   .title{
-    font-size: 28px;
     float: left;
-    color: #333333;
     margin-left: 54px;
+    h2{
+      font-size: 28px;
+      color: #333333;
+    }
     span{
       font-size: 14px;
       margin-left: 17px;
       color: #999999;
-      font-weight: bold;
+      font-weight: 200;
     }
   }
   .username{
