@@ -52,8 +52,8 @@
   </div>
 </template>
 <script>
+// import { Message } from 'element-ui';
 import { mapActions } from "vuex"; //从vuex中解构mapActions对象
-// import {Message} from 'element-ui';
 export default {
   name: "login",
   data() {
@@ -80,7 +80,7 @@ export default {
       this.axios.post("/user/login",{
         username:"admin1",password:"admin1",email:"admin1@163.com"
       }).then(()=>{
-        alert("注册成功"); 
+        this.$message.info("注册成功"); 
       })
     },
   }
