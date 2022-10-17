@@ -1,5 +1,6 @@
 <template>
   <div class="order-pay">
+    
     <div class="wrapper">
       <div class="container">
         <div class="order-wrap">
@@ -80,7 +81,7 @@ import QRCode from "qrcode"
 import Modal from '@/components/Modal.vue'
 export default{
   name:'order-pay',
-  components:{
+  components:{ 
     QRCode,
     ScanPayCode,
     Modal,
