@@ -1,5 +1,77 @@
 <template>
-<div class="order-pay">order-pay</div>
+  <div class="order-pay">
+    <div class="wrapper">
+      <div class="container">
+        <div class="order-wrap">
+          <div class="item-order">
+            <div class="icon-succ"></div>
+            <div class="order-info">
+              <h2>订单提交成功！去付款咯～</h2>
+              <p>请在<span>30分</span>内完成支付, 超时后将取消订单</p>
+              <p>收货信息：{{addresInfo}}</p>
+            </div>
+            <div class="order-total">
+              <p>应付总额：<span>{{payment}}</span>元</p>
+              <p>订单详情
+                <em class="icon-down" :class="{'up':showDetail}"
+                @click="showDetail=!showDetail"></em>
+              </p>
+            </div>
+          </div>
+          <!-- 订单详情 (平时隐藏)-->
+          <div class="item-detail" v-if="showDetail">
+            <div class="item"> 
+              <div class="detail-title">订单号：</div>
+              <div class="detail-info theme-color">{{orderId}}</div>
+            </div>
+            <div class="item">
+              <div class="detail-title">收货信息：</div>
+              <div class="detail-info">{{addresInfo}}</div>
+            </div>
+            <div class="item good">
+              <div class="detail-title">商品名称：</div>
+              <div class="detail-info">
+                <ul>
+                  <li v-for="(item,index) in orderDetail" :key="index">
+                    <img v-lazy="item.productImage">{{item.productName}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="item">
+              <div class="detail-title">发票信息：</div>
+              <div class="detail-info">电子发票 个人</div>
+            </div>
+          </div>
+        </div>
+        <div class="item-pay">
+          <h3>选择以下支付方式付款</h3>
+          <div class="pay-way">
+            <p>支付平台</p>
+            <div class="pay pay-ali " :class="{'checked':payType==1}" @click="paySubmit(1)"></div>
+            <div class="pay pay-wechat" :class="{'checked':payType==2}" @click="paySubmit(2)"></div>
+          </div>  
+        </div>
+      </div>
+    </div>
+    <!-- 传递给ScanPayCode  命名为payImg的img图片  -->
+    <scan-pay-code v-if="showPay" @close="closePayModal" :img="payImg">
+    </scan-pay-code>   
+    <!-- 支付弹框 -->
+    <modal 
+      title="支付确认"
+      btnType="3"
+      :showModal="showPayModal"
+      sureText="查看订单"
+      cancelText="未支付"
+      @cancel="showPayModal=false"
+      @submit="goOrderList"
+    >
+      <template v-slot:body>
+        <p>您确认是否完成订单</p>
+      </template>
+    </modal>
+  </div>
 </template>
 <script>
 import OrderHeader from './../components/OrderHeader'
@@ -29,6 +101,64 @@ export default{
 
     }
   },
+  mounted(){
+    this.getOrderDetail();
+  },
+  methods:{
+    getOrderDetail(){
+      //调用接口
+      this.axios.get(`/orders/${this.orderId}`).then((res)=>{
+        let item = res.shippingVo;//购物车地址实体
+        this.addresInfo = `${item.receiverName}     ${item.receiverMobile}
+                           ${item.receiverProvince} ${item.receiverCity} 
+                           ${item.receiverDistrict} ${item.receiverAddress}`
+        this.orderDetail = res.orderItemVoList;
+        this.payment=res.payment;
+      })
+    },
+    paySubmit(payType){
+      if(payType ==1){
+      //打开新的窗口(要拼接id)
+        window.open('/#/order/alipay?orderId='+this.orderId,'_blank');
+      }
+      else{
+          this.axios.post("/pay",{
+            orderId:this.orderId,
+            orderName:"Vue高仿小米商城", //扫码支付时订单名称
+            amount:0.01, //单位元
+            payType:2 //1支付宝，2微信
+          }).then((res)=>{//res就是data
+            QRCode.toDataURL(res.content)  //调用接口拿到服务端返回的字符串
+            .then(url=>{  
+            //通过QRCode二维码插件,讲字符串转化为base64位的图片,并将图片保存后传给子组件渲染
+              this.showPay = true; //支付成功,弹框显示
+              this.payImg = url ; //支付二维码图片=url地址
+              this.loopOrderState();
+            }).catch( ()=>{
+              this.$message.error("微信支付二维码生成失败,请稍后重试");
+            })
+          })
+      }
+    },//关闭微信弹框
+    closePayModal(){
+       this.showPay = false;
+       this.showPayModal=true;//是否完成支付
+       clearInterval(this.T);//关闭定时器
+    },//查询当前订单支付状态
+    loopOrderState(){
+      this.T=setInterval(()=>{
+        this.axios.get(`/orders/${this.orderId}`).then((res)=>{
+          if(res.status == 20){//已付款
+          clearInterval(this.T);//关闭定时器
+          this.goOrderList();//回到订单页面
+          }
+        },1000);
+      })
+    },
+    goOrderList(){//按下查看订单触发该方法
+      this.$router.push("/order/list");//跳转到订单详情页面
+    }
+  }
 }
 </script>
 <style lang="scss">
