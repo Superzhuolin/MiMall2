@@ -5,18 +5,20 @@
 </template>
 
 <script>
-import axios from "axios";
-import jsonp from "jsonp";
+// import axios from "axios";
+// import jsonp from "jsonp";
 export default {
   name: "App",
-  components: {},
+  components: {},  
   data() {
     return {
     };
   },
   mounted() {
-    this.getUser();
-    this.getCartCount();
+    if(this.$cookie.get("userId")){
+      this.getUser();
+      this.getCartCount();
+    }
   },
   methods: {
     //页面刷新后通过mounted(钩子)再次读取用户名

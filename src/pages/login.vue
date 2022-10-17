@@ -71,8 +71,13 @@ export default {
       }).then((res)=>{
         // this.$store.dispatch("saveUserName",res.username);//读取后,保存用户名
         this.saveUserName(res.username);//mapActions方式
-        this.$cookie.set("userId",res.id,{expires:"1M"});
-        this.$router.push("/index");
+        this.$cookie.set("userId",res.id,{expires:"Session"});
+        this.$router.push({
+          name:"index",
+          params:{
+            from:"login"
+          }
+        });
       })
     },
     ...mapActions(['saveUserName']),

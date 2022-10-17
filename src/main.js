@@ -4,18 +4,18 @@ import axios from "axios"
 import VueAxios from "vue-axios"  //把axios对象挂载到vue实例中
 import VueLazyLoad from 'vue-lazyload'  //懒加载
 import VueCookie from 'vue-cookie'
-import { Message } from 'element-ui'
+import {Message} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css' //只需引入一次
 import store from './store/index'  //默认读取里面的index.js
 import App from './App.vue'  //主键
-//import env from "./env"  //  ./表示当前目录 若没有会被当成插件 
+//import env from "./env"  //  ./表示当前目录 若没有会被当成插件
 
 
 // mock开关
-// const mock = false;
-// if(mock){
-//   require("./mock/api");
-// }
+const mock = false;
+if(mock){
+  require("./mock/api");
+}
 // 根据前端的跨域方式做调整  
 axios.defaults.baseURL = "/api";
 axios.defaults.timeout = 8000;
@@ -34,19 +34,20 @@ axios.interceptors.response.use(function (response) {
     }
     return Promise.reject(res);     //返回promise错误状态
   } else{
-    Message.warning(res.msg);
+    this.$message.warning(res.msg);
     return Promise.reject(res);
   }
 })
 
 Vue.use(VueAxios,axios);
 Vue.use(VueCookie);
-Vue.use(Message);
-Vue.prototype.$message = Message; 
-Vue.config.productionTip = false;
 Vue.use(VueLazyLoad, {
   loading: '/imgs/loading-svg/loading-bars.svg'
 });  //加载懒加载插件
+Vue.prototype.$message = Message; 
+Vue.config.productionTip = false;
+// Vue.prototype.$message = Message;//使用对象方式扩展uL插件
+// Vue.config.productionTip = false;  //生产环境提示
 
 new Vue({
   render: h => h(App),
