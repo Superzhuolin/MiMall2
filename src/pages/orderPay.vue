@@ -1,6 +1,5 @@
 <template>
   <div class="order-pay">
-    
     <div class="wrapper">
       <div class="container">
         <div class="order-wrap">
@@ -49,7 +48,7 @@
           <h3>选择以下支付方式付款</h3>
           <div class="pay-way">
             <p>支付平台</p>
-            <div class="pay pay-ali " :class="{'checked':payType==1}" @click="paySubmit(1)"></div>
+            <div class="pay pay-ali" :class="{'checked':payType==1}" @click="paySubmit(1)"></div>
             <div class="pay pay-wechat" :class="{'checked':payType==2}" @click="paySubmit(2)"></div>
           </div>  
         </div>
@@ -69,7 +68,7 @@
       @submit="goOrderList"
     >
       <template v-slot:body>
-        <p>您确认是否完成订单</p>
+        <p>您确认是否完成订单?</p>
       </template>
     </modal>
   </div>
@@ -149,9 +148,11 @@ export default{
     loopOrderState(){
       this.T=setInterval(()=>{
         this.axios.get(`/orders/${this.orderId}`).then((res)=>{
-          if(res.status == 20){//已付款
-          clearInterval(this.T);//关闭定时器
-          this.goOrderList();//回到订单页面
+          //已付款
+          if(res.status == 20){
+            // 一直刷新接口
+            clearInterval(this.T);//关闭定时器
+            this.goOrderList();//付款后自动 回到订单页面
           }
         },1000);
       })
