@@ -2,6 +2,11 @@
   <div class="order-confirm">
     <!-- svg是矢量图(高清图)  开发中常用png/jpg格式(会失真)
     代码量减少且不会拉请求(可以优化前端性能) -->
+    <order-header title="订单确认">
+      <template v-slot:tip>
+        <span>请认真填写收货地址</span>
+      </template>
+    </order-header>
     <svg
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"

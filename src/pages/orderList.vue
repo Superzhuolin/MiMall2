@@ -1,5 +1,93 @@
 <template>
-<div class="order-list">order-list</div>
+  <div class="order-list">
+    <order-header title="订单列表">
+      <template v-slot:tip>
+        <span>请谨防钓鱼链接或诈骗电话，了解更多></span>
+      </template>
+    </order-header>
+    <div class="wrapper">
+      <div class="container">
+        <div class="order-box">
+          <!-- 加载框 -->
+          <loading v-if="loading"></loading>
+          <!-- 订单体 -->
+          <div class="order" v-for="(order,index) in list" :key="index">
+            <!-- 订单标题 -->
+            <div class="order-title">
+              <div class="item-info fl">
+                {{order.createTime}}<span>|</span>
+                {{order.receiverName}}<span>|</span>
+         订单号：{{order.orderNo}}<span>|</span>
+                {{order.paymentTypeDesc}}
+              </div>`  `
+              <div class="item-money fr">
+                <span>应付金额：</span>
+                <span class="money">{{order.payment}}</span>
+                <span>元</span>
+              </div>
+            </div>
+            <!-- 订单内容 -->
+            <div class="order-content clearfix">
+              <!-- 商品部分 -->
+              <div class="good-box fl">
+                <div class="good-list" v-for="(item,i) in order.orderItemVoList" :key="i">
+                    <!-- 商品图片 -->
+                  <div class="good-img">
+                    <img v-lazy="item.productImage">
+                  </div>
+                    <!-- 商品名称 -->
+                  <div class="good-name">
+                    <div class="p-name">{{item.productName}}</div>
+                    <div class="p-money">{{item.totalPrice+""+item.quantity}}元</div>
+                  </div>
+                </div>
+              </div>
+              <!-- 商品状态部分 -->
+              <!-- 已付款 -->
+              <div class="good-state fr" v-if="order.status==20">
+                <a href="javascript:;">{{order.statusDesc}}</a>
+              </div>
+              <!-- 未付款 -->
+              <div class="good-state fr" v-else>
+                <a href="javascript:;" @click="goPay(order.orderNo)">
+                  {{order.statusDesc}}
+                </a>
+              </div>
+            </div>
+
+          </div>
+          <!-- 分页功能 -->
+          <el-pagination
+            v-if="false"
+            class="pagination"
+            background
+            layout="prev,pager,next"
+            :pageSize="pageSize"
+            :total="total"
+            @current-change="handleChange"
+          >
+          </el-pagination>
+          <!-- 按钮加载更多 -->
+          <div class="load-more" v-if="false">
+            <el-button type="primary" :loading="loading" @click="loadMore">
+              加载更多
+            </el-button>
+          </div>
+          <!-- 滚动加载更多 -->
+          <div class="scroll-more"
+            v-infinite-scroll="scrollMore"
+            infinite-scroll-disabled="busy"
+            infinite-scroll-distance="410"
+            v-if="true"
+          >
+             <img src="/imgs/loading-svg/loading-spinning-bubbles.svg" v-show="loading">
+          </div>
+          <!-- 订单列表无数据 -->
+          <no-data v-if="!loading&&list.length==0"></no-data>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
   import OrderHeader from './../components/OrderHeader'
@@ -19,7 +107,7 @@
     directives:{infiniteScroll}, //配置
     data(){
       return{
-        loading:false,//默认显示,数据回来时关闭
+        loading:true,//默认显示,数据回来时关闭
         list:[],
         pageSize:10,//一页十条
         pageNum:1,//当前页数
@@ -37,7 +125,7 @@
         this.busy=true; //bug:首次就会加载第二页
         this.axios.get("/orders",{
           params:{
-            pageSize:10,//设置订单展示两条数据
+            pageSize:2,//设置订单展示两条数据
             pageNum:this.pageNum,
           }
         }).then((res)=>{
@@ -60,7 +148,7 @@
           }
         }) */
         this.$router.push({   //3.query传参方式  可以把参数添加到地址栏
-          path:'/order/pay',
+          path:"/order/pay",
           query:{
             orderNo
           }
@@ -85,12 +173,12 @@
         this.loading=true;//请求开始,加载图片显示
         this.axios.get("/orders",{
           params:{
-            pageSize:10,//设置订单展示数据数量
+            pageSize:2,//设置订单展示数据数量
             pageNum:this.pageNum,
           }
         }).then((res)=>{
           this.list=this.list.concat(res.list);//拼接原数组从而实现加载更多
-          this.loading=true;//请求结束,图片不加载
+          this.loading=false;//请求结束,图片不加载
           if(res.hasNextPage){
             this.busy=false;//开启滚动
           }else{
